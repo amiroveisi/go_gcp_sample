@@ -1,0 +1,50 @@
+# Horizontal Pod Autoscaler (HPA) manifest template
+# This automatically scales the deployment based on resource utilization
+
+# Only create HPA if autoscaling is enabled in values
+{{- if .Values.autoscaling.enabled }}
+
+# HPA API version v2 (latest stable version)
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+
+# HPA metadata
+metadata:
+  name: {{ include "gogcptest.fullname" . }}  # Same name as deployment
+  labels:
+    {{- include "gogcptest.labels" . | nindent 4 }}  # Standard labels
+
+# HPA specification
+spec:
+  # Target resource to scale (the deployment we created)
+  scaleTargetRef:
+    apiVersion: apps/v1              # API version of target resource
+    kind: Deployment                 # Type of resource to scale
+    name: {{ include "gogcptest.fullname" . }}  # Name of deployment to scale
+  
+  # Scaling boundaries
+  minReplicas: {{ .Values.autoscaling.minReplicas }}  # Never scale below this
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}  # Never scale above this
+  
+  # Metrics that trigger scaling decisions
+  metrics:
+    # CPU-based scaling (if configured in values)
+    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource                 # Resource-based metric (CPU/Memory)
+      resource:
+        name: cpu                    # Monitor CPU utilization
+        target:
+          type: Utilization          # Percentage-based target
+          # Scale up when average CPU > this percentage across all pods
+          averageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+
+# How HPA works:
+# 1. Monitors CPU utilization of all pods in the deployment
+# 2. Calculates average utilization across pods
+# 3. If average > target (80%), scales up by adding pods
+# 4. If average < target, scales down by removing pods
+# 5. Respects min/max replica limits
+# 6. Has built-in stabilization to prevent flapping
+
+{{- end }}

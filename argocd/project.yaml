@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: your-go-app-project
+  name: gogcptest-project
   namespace: argocd
 spec:
   sourceRepos:

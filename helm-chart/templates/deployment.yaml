@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "your-go-app.fullname" . }}
+  name: {{ include "gogcptest.fullname" . }}
   labels:
-    {{- include "your-go-app.labels" . | nindent 4 }}
+    {{- include "gogcptest.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "your-go-app.selectorLabels" . | nindent 6 }}
+      {{- include "gogcptest.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "your-go-app.selectorLabels" . | nindent 8 }}
+        {{- include "gogcptest.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: {{ .Chart.Name }}

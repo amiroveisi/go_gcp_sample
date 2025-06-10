@@ -5,8 +5,8 @@
 {{- if .Values.autoscaling.enabled }}
 
 # HPA API version v2 (latest stable version)
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
+# apiVersion: autoscaling/v2
+# kind: HorizontalPodAutoscaler
 
 # HPA metadata
 metadata:

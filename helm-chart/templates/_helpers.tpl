@@ -1,8 +1,8 @@
-{{- define "your-go-app.name" -}}
+{{- define "gogcptest.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
-{{- define "your-go-app.fullname" -}}
+{{- define "gogcptest.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -15,20 +15,20 @@
 {{- end }}
 {{- end }}
 
-{{- define "your-go-app.chart" -}}
+{{- define "gogcptest.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
-{{- define "your-go-app.labels" -}}
-helm.sh/chart: {{ include "your-go-app.chart" . }}
-{{ include "your-go-app.selectorLabels" . }}
+{{- define "gogcptest.labels" -}}
+helm.sh/chart: {{ include "gogcptest.chart" . }}
+{{ include "gogcptest.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
-{{- define "your-go-app.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "your-go-app.name" . }}
+{{- define "gogcptest.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "gogcptest.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
